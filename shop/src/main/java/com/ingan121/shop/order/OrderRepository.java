@@ -22,14 +22,6 @@ public class OrderRepository {
                 .getResultList();
     }
 
-    public Order findByOrderId(String orderId) {
-        List<Order> result = em.createQuery(
-                "SELECT m FROM Order m WHERE m.orderId = :orderId", Order.class
-        ).setParameter("orderId", orderId).getResultList();
-
-        return result.isEmpty() ? null : result.get(0);
-    }
-
     public void save(Order order) {
         em.persist(order);
     }

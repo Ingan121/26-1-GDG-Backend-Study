@@ -22,14 +22,6 @@ public class ProductRepository {
                 .getResultList();
     }
 
-    public Product findByProductId(String productId) {
-        List<Product> result = em.createQuery(
-                "SELECT m FROM Product m WHERE m.productId = :productId", Product.class
-        ).setParameter("productId", productId).getResultList();
-
-        return result.isEmpty() ? null : result.get(0);
-    }
-
     public void save(Product product) {
         em.persist(product);
     }

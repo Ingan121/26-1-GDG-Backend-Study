@@ -8,6 +8,7 @@ import com.ingan121.shop.product.dto.ProductUpdateRequest;
 import com.ingan121.shop.product.dto.ProductCreateRequest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,15 +16,9 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    //@Transactional
+    @Transactional
     public long createProduct(ProductCreateRequest request) {
-        Product existingProduct = productRepository.findByProductId(request.getProductId());
-        if (existingProduct != null) {
-            throw new RuntimeException("이미 존재하는 상품 아이디입니다: " + request.getProductId());
-        }
-
         Product product = new Product(
-                request.getProductId(),
                 request.getName(),
                 request.getDescription(),
                 request.getPrice(),
@@ -35,12 +30,12 @@ public class ProductService {
         return product.getId();
     }
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Product getProductById(Long id) {
         Product product = productRepository.findById(id);
 
@@ -51,7 +46,7 @@ public class ProductService {
         return product;
     }
 
-    //@Transactional
+    @Transactional
     public void updateProduct(Long id, ProductUpdateRequest request) {
         Product product = productRepository.findById(id);
 
@@ -63,7 +58,7 @@ public class ProductService {
         product.updateInfo(request.getName(), request.getDescription(), request.getPrice(), request.getAmount());
     }
 
-    //@Transactional
+    @Transactional
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id);
 
