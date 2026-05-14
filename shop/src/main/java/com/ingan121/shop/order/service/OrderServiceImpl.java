@@ -1,7 +1,9 @@
-package com.ingan121.shop.order;
+package com.ingan121.shop.order.service;
 
 import java.util.List;
 
+import com.ingan121.shop.order.Order;
+import com.ingan121.shop.order.repository.JpaOrderRepository;
 import org.springframework.stereotype.Service;
 
 import com.ingan121.shop.order.dto.OrderCreateRequest;
@@ -11,12 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository orderRepository;
+    private final JpaOrderRepository jpaOrderRepository;
 
+    @Override
     @Transactional
-    public long createOrder(OrderCreateRequest request) {
+    public Long createOrder(OrderCreateRequest request) {
         Order order = new Order(
                 request.getProduct(),
                 request.getMember(),
@@ -24,19 +27,21 @@ public class OrderService {
                 request.getOrderDate()
         );
 
-        orderRepository.save(order);
+        jpaOrderRepository.save(order);
 
         return order.getId();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+        return jpaOrderRepository.findAll();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Order getOrderById(Long id) {
-        Order order = orderRepository.findById(id);
+        Order order = jpaOrderRepository.findById(id);
 
         if (order == null) {
             throw new RuntimeException("주문을 찾을 수 없습니다.");
@@ -45,16 +50,17 @@ public class OrderService {
         return order;
     }
 
+    @Override
     @Transactional
     public void deleteOrder(Long id) {
-        Order order = orderRepository.findById(id);
+        Order order = jpaOrderRepository.findById(id);
 
         if (order == null) {
             throw new RuntimeException("주문을 찾을 수 없습니다.");
         }
 
         // Repository를 통해 삭제
-        orderRepository.deleteById(id);
+        jpaOrderRepository.deleteById(id);
     }
 
 

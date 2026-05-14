@@ -1,7 +1,10 @@
-package com.ingan121.shop.product;
+package com.ingan121.shop.product.service;
 
 import java.util.List;
 
+import com.ingan121.shop.product.Product;
+import com.ingan121.shop.product.repository.JpaProductRepository;
+import com.ingan121.shop.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import com.ingan121.shop.product.dto.ProductUpdateRequest;
@@ -12,12 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
+    private final JpaProductRepository jpaProductRepository;
 
+    @Override
     @Transactional
-    public long createProduct(ProductCreateRequest request) {
+    public Long createProduct(ProductCreateRequest request) {
         Product product = new Product(
                 request.getName(),
                 request.getDescription(),
@@ -25,19 +29,21 @@ public class ProductService {
                 request.getAmount()
         );
 
-        productRepository.save(product);
+        jpaProductRepository.save(product);
 
         return product.getId();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return jpaProductRepository.findAll();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Product getProductById(Long id) {
-        Product product = productRepository.findById(id);
+        Product product = jpaProductRepository.findById(id);
 
         if (product == null) {
             throw new RuntimeException("상품을 찾을 수 없습니다.");
@@ -46,9 +52,10 @@ public class ProductService {
         return product;
     }
 
+    @Override
     @Transactional
     public void updateProduct(Long id, ProductUpdateRequest request) {
-        Product product = productRepository.findById(id);
+        Product product = jpaProductRepository.findById(id);
 
         if (product == null) {
             throw new RuntimeException("상품을 찾을 수 없습니다.");
@@ -58,16 +65,17 @@ public class ProductService {
         product.updateInfo(request.getName(), request.getDescription(), request.getPrice(), request.getAmount());
     }
 
+    @Override
     @Transactional
     public void deleteProduct(Long id) {
-        Product product = productRepository.findById(id);
+        Product product = jpaProductRepository.findById(id);
 
         if (product == null) {
             throw new RuntimeException("상품을 찾을 수 없습니다.");
         }
 
         // Repository를 통해 삭제
-        productRepository.deleteById(id);
+        jpaProductRepository.deleteById(id);
     }
 
 

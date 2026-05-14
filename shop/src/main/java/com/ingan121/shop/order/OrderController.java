@@ -4,6 +4,7 @@ package com.ingan121.shop.order;
 import java.net.URI;
 import java.util.List;
 
+import com.ingan121.shop.order.service.OrderServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final OrderService orderService;
+    private final OrderServiceImpl orderService;
 
     @PostMapping
     public ResponseEntity<Void> createOrder(@RequestBody OrderCreateRequest request) {

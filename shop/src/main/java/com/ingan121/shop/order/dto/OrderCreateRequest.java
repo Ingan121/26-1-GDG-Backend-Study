@@ -3,9 +3,7 @@ package com.ingan121.shop.order.dto;
 // productId, memberId, address, orderDate
 
 import com.ingan121.shop.member.Member;
-import com.ingan121.shop.member.MemberRepository;
 import com.ingan121.shop.product.Product;
-import com.ingan121.shop.product.ProductRepository;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

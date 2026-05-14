@@ -57,4 +57,8 @@ public class Member {
             this.address = address;
         }
     }
+
+    public void setId(long id1) {
+        this.id = id;
+    }
 }
